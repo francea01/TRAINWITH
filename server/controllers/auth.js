@@ -2,16 +2,15 @@
 
 const { MongoClient } = require("mongodb");
 const { areStringValuesValid } = require("../validators");
+const jwt = require("jsonwebtoken");
 
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 };
 
-// use this data. Changes will persist until the server (backend) restarts.
-
 const signIn = async (req, res) => {
-  const { MONGO_URI } = process.env;
+  const { MONGO_URI, JWT_KEY } = process.env;
   const { email, password } = req.body;
   console.log(MONGO_URI);
   console.log({ email, password });
@@ -19,14 +18,24 @@ const signIn = async (req, res) => {
   try {
     await client.connect();
     const db = client.db("TrainWith");
-    const result = await db.collection("users").findOne({ email, password });
-    console.log(result);
+    const user = await db.collection("users").findOne({ email, password });
+    console.log(user);
 
-    result
-      ? res.status(200).json({ status: 200, data: "ok" })
-      : res.status(404).json({ status: 404, data: "not found" });
+    if (user) {
+      const token = jwt.sign(
+        {
+          username: `${user.userName}`,
+          userId: user._id,
+        },
+        JWT_KEY
+      );
+      res.status(200).json({ status: 200, token });
+    } else {
+      res.status(404).json({ status: 404, data: "not found" });
+    }
   } catch (err) {
-    res.status(500).json({ status: 500, data: "not ok" });
+    console.log(err);
+    res.status(500).json({ status: 500, data: "sign in not ok" });
   } finally {
     client.close();
   }
@@ -46,7 +55,7 @@ const signUp = async (req, res) => {
     {
       propertyName: "password",
       body,
-      options: { maxLength: 10, minLength: 8 },
+      options: { maxLength: 15, minLength: 6 },
     },
   ]);
 
@@ -69,7 +78,7 @@ const signUp = async (req, res) => {
       res.status(200).json({ status: 200, data: newUser });
     }
   } catch (err) {
-    res.status(500).json({ status: 500, data: "not ok" });
+    res.status(500).json({ status: 500, data: "sign up not ok" });
   } finally {
     client.close();
   }
