@@ -1,7 +1,7 @@
 "use strict";
 
 const { MongoClient } = require("mongodb");
-const { areStringValuesValid } = require("../validators");
+const { isBodyValid } = require("../validators");
 const jwt = require("jsonwebtoken");
 
 const options = {
@@ -24,7 +24,9 @@ const signIn = async (req, res) => {
     if (user) {
       const token = jwt.sign(
         {
-          username: `${user.userName}`,
+          userName: `${user.userName}`,
+          firstName: `${user.firstName}`,
+          lastName: `${user.lastName}`,
           userId: user._id,
         },
         JWT_KEY
@@ -47,14 +49,13 @@ const signUp = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   const body = req.body;
 
-  const errors = areStringValuesValid([
-    { propertyName: "firstName", body },
-    { propertyName: "lastName", body },
-    { propertyName: "userName", body },
-    { propertyName: "email", body, options: { pattern: "email" } },
+  const errors = isBodyValid(body, [
+    { name: "firstName" },
+    { name: "lastName" },
+    { name: "userName" },
+    { name: "email", options: { pattern: "email" } },
     {
-      propertyName: "password",
-      body,
+      name: "password",
       options: { maxLength: 15, minLength: 6 },
     },
   ]);

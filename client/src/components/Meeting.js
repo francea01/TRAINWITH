@@ -1,44 +1,86 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import inMemoryJwt from "../inMemoryJwt";
 import MeetingActions from "./MeetingActions";
 
 const Meeting = ({ meeting }) => {
   return (
     <Wrapper>
-      <PostUser></PostUser>
       <PostMeeting>
-        <Sport>Sport: {meeting.sport}</Sport>
-        <Players>Players number: {meeting.players}</Players>
-        <Address>meeting's address: {meeting.address}</Address>
-        <Date>meeting's date: {meeting.date}</Date>
+        <PostUser>{inMemoryJwt.getParsedToken().userName}</PostUser>
+        <Sport>{meeting.sport}</Sport>
+        <Date>{meeting.date}</Date>
+        <Players>{meeting.maxPlayers} players</Players>
+        <Address>{meeting.address}</Address>
         <Notes>Notes: {meeting.notes}</Notes>
+        <TimePost> posted: {meeting.createdAt}</TimePost>
       </PostMeeting>
-      <MeetingActions meeting={meeting} />
+      <MeetingActions
+        meetingSigners={meeting.signers}
+        meetingComments={meeting.comments}
+        meetingId={meeting._id}
+      />
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
   border-radius: 5px;
-  margin: 15px;
-  background-color: wheat;
+  margin: 15px auto;
+  background-color: white;
+  width: 600px;
 `;
-
-const PostUser = styled.div``;
 
 const PostMeeting = styled.div`
-  margin: 5px;
+  display: flex;
+  flex-direction: column;
 `;
 
-const Sport = styled.h4``;
+const PostUser = styled.h3`
+  font-size: 26px;
 
-const Players = styled.h4``;
+  border-radius: 5px;
+  margin: 10px auto;
+`;
 
-const Address = styled.h4``;
+const TimePost = styled.h4`
+  font-size: 14px;
 
-const Date = styled.h4``;
+  margin-bottom: 2px;
 
-const Notes = styled.p``;
+  border-radius: 5px;
+  margin: 3px;
+`;
+
+const Sport = styled.h4`
+  text-align: center;
+  padding: 10px;
+  margin: 0;
+  background-color: blanchedalmond;
+`;
+
+const Players = styled.h4`
+  border-radius: 5px;
+  margin: 3px;
+`;
+
+const Address = styled.h4`
+  border-radius: 5px;
+  margin: 3px;
+`;
+
+const Date = styled.h4`
+  font-size: 20px;
+  border-radius: 5px;
+  margin: 3px;
+`;
+
+const Notes = styled.h4`
+  margin: 3px;
+
+  border-radius: 5px;
+`;
 
 export default Meeting;

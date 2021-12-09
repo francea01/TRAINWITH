@@ -26,33 +26,27 @@ const validators = {
 };
 
 function pushError(errors, fieldName, error) {
-  const existingErrorRef = errors.find(
-    (error) => error.fieldName === fieldName
-  );
-  existingErrorRef
-    ? existingErrorRef.errors.push(error)
+  const errorRef = errors.find((error) => error.fieldName === fieldName);
+  errorRef
+    ? errorRef.errors.push(error)
     : errors.push({ fieldName, errors: [error] });
 }
 
-const areStringValuesValid = (fields) => {
+const isBodyValid = (body, fields) => {
   const errors = [];
 
   fields.forEach((field) => {
-    const bodyValue = field.body[field.propertyName]?.trim();
+    const fieldValue = body[field.name];
+    typeof fieldValue === "string" && fieldValue.trim();
 
-    if (!bodyValue) {
-      pushError(errors, field.propertyName, "this field is required");
+    if (!fieldValue) {
+      pushError(errors, field.name, "this field is required");
       return;
     }
 
     field.options &&
       Object.entries(field.options).forEach(([optionKey, optionValue]) =>
-        validators[optionKey](
-          field.propertyName,
-          bodyValue,
-          optionValue,
-          errors
-        )
+        validators[optionKey](field.name, fieldValue, optionValue, errors)
       );
   });
 
@@ -60,5 +54,5 @@ const areStringValuesValid = (fields) => {
 };
 
 module.exports = {
-  areStringValuesValid,
+  isBodyValid,
 };

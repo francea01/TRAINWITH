@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import styled from "styled-components";
 import { MeetingContext } from "../contexts/MeetingContext";
+import inMemoryJwt from "../inMemoryJwt";
 
-const NewMeeting = () => {
+const NewMeeting = ({ onCreatedMeeting }) => {
   const {
     sport,
     setSport,
@@ -15,15 +16,16 @@ const NewMeeting = () => {
     notes,
     setNotes,
   } = useContext(MeetingContext);
+  const form = useRef(null);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
       const response = await fetch("/private/meeting", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${inMemoryJwt.getToken()}`,
         },
         body: JSON.stringify({
           sport,
@@ -34,9 +36,10 @@ const NewMeeting = () => {
         }),
       });
 
-      const { status, meeting } = await response.json();
+      const { status, data } = await response.json();
       if (status === 201) {
-        // add meeting in storage
+        form.current.reset();
+        onCreatedMeeting(data);
       } else {
         window.alert("Sorry, error");
       }
@@ -44,14 +47,36 @@ const NewMeeting = () => {
       console.log(err);
     }
   };
+
+  const getMinDate = () => {
+    const today = new Date();
+    console.log(
+      `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
+    );
+    return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+  };
   return (
     <Wrapper>
-      <Form onSubmit={handleSubmit}>
-        <NewMeetingText>Write your next Meeting</NewMeetingText>
-        <Input
-          placeholder="Sport:"
-          onChange={(ev) => setSport(ev.target.value)}
-        />
+      <Form ref={form} onSubmit={handleSubmit}>
+        <NewMeetingText>Post your next Meeting</NewMeetingText>
+        <Select onChange={(ev) => setSport(ev.target.value)}>
+          <Option disabled selected defaultValue>
+            --Please choose an Activity--
+          </Option>
+          <Option>Soccer</Option>
+          <Option>Football</Option>
+          <Option>Basketball</Option>
+          <Option>Baseball</Option>
+          <Option>Hockey</Option>
+          <Option>Cross training</Option>
+          <Option>Tennis</Option>
+          <Option>Table tennis</Option>
+          <Option>Badminton</Option>
+          <Option>Cycling</Option>
+          <Option>Running</Option>
+          <Option>Walking</Option>
+          <Option>Hiking</Option>
+        </Select>
         <Input
           placeholder="Number players:"
           onChange={(ev) => setPlayers(ev.target.value)}
@@ -61,7 +86,8 @@ const NewMeeting = () => {
           onChange={(ev) => setAddress(ev.target.value)}
         />
         <Input
-          placeholder="Meeting date:"
+          type="date"
+          max={getMinDate()}
           onChange={(ev) => setDate(ev.target.value)}
         />
         <InputInfos
@@ -79,39 +105,84 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   width: auto;
+  margin-top: 30px;
 `;
 
 const NewMeetingText = styled.h4`
   text-align: center;
   color: white;
+  margin: 0;
 `;
 
 const Form = styled.form`
-  background-color: lightslategrey;
+  background: radial-gradient(
+      ellipse farthest-corner at right bottom,
+      #fedb37 0%,
+      #fdb931 8%,
+      #9f7928 30%,
+      #8a6e2f 40%,
+      transparent 80%
+    ),
+    radial-gradient(
+      ellipse farthest-corner at left top,
+      #ffffff 0%,
+      #ffffac 8%,
+      #d1b464 25%,
+      #5d4a1f 62.5%,
+      #5d4a1f 100%
+    );
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 350px;
+  width: 400px;
+  height: 300px;
   border: 1px solid black;
+  padding: 10px;
+  box-shadow: 0 2px 15px 8px grey;
   border-radius: 5px;
   margin: 20px;
-  padding: 5px;
+  padding: 2px;
+`;
+
+const Select = styled.select`
+  margin: 3px;
+  height: 35px;
+`;
+
+const Option = styled.option`
+  text-align: center;
 `;
 
 const Input = styled.input`
   margin: 3px;
   text-align: center;
+  height: 35px;
 `;
 
 const InputInfos = styled.input`
-  margin: 3px;
+  margin: 3px 3px 5px 3px;
   height: 100px;
   text-align: center;
 `;
 
 const SubmitBtn = styled.button`
   width: 70px;
-  margin: auto;
+  margin: 3px auto;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  background-color: transparent;
+  color: white;
+  &:hover {
+    border-radius: 40px;
+    background-color: gray;
+    box-shadow: 1px 1px 20px 2px whitesmoke;
+  }
+
+  &:active {
+    color: transparent;
+    box-shadow: 5px 1px 15px 1px whitesmoke;
+  }
 `;
 
 export default NewMeeting;

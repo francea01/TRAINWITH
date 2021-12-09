@@ -1,16 +1,19 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useHistory } from "react-router";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { UserContext } from "../contexts/UserContext";
+import inMemoryJWTManager from "../inMemoryJwt";
 
 const SignIn = () => {
   const history = useHistory();
+  const [hasFormError, setHasFormError] = useState(false);
 
   const { email, setEmail, password, setPassword } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setHasFormError(false);
     try {
       const response = await fetch("/public/sign-in", {
         method: "POST",
@@ -23,10 +26,12 @@ const SignIn = () => {
 
       const { status, token } = await response.json();
       if (status === 200) {
-        localStorage.setItem("token", token);
+        inMemoryJWTManager.setToken(token);
         history.push("/");
+      } else if (status === 404) {
+        setHasFormError(true);
       } else {
-        window.alert("Sorry, we didn't find you.");
+        window.alert("Sorry, an error as occured, please try again");
       }
     } catch (err) {
       console.log(err);
@@ -35,7 +40,8 @@ const SignIn = () => {
 
   return (
     <Wrapper>
-      <SignUpLink to="/sign-up">Sign-up</SignUpLink>
+      <Title>TRAINWITH</Title>
+      <Separation></Separation>
 
       <DivSignIn>
         <FormSignIn onSubmit={handleSubmit}>
@@ -53,11 +59,20 @@ const SignIn = () => {
           <Input
             placeholder="Password"
             type="password"
+            required
             onChange={(ev) => {
               setPassword(ev.target.value);
             }}
           />
+          <Error>{hasFormError ? "email or password incorrect." : ""}</Error>
           <SubmitButton type="submit">Submit</SubmitButton>
+          <Separation></Separation>
+          <SignUpdirection>
+            <SignUpText>Start now with TRAINWITH </SignUpText>
+            <ButtonSignUp>
+              <SignUpLink to="/sign-up">Sign-up</SignUpLink>
+            </ButtonSignUp>
+          </SignUpdirection>
         </FormSignIn>
       </DivSignIn>
     </Wrapper>
@@ -66,17 +81,54 @@ const SignIn = () => {
 
 const Wrapper = styled.div``;
 
-const SignInText = styled.h3``;
+const Title = styled.h1`
+  font-family: "Julius Sans One", sans-serif;
+  margin-left: 15px;
+  font-size: 38px;
+  color: white;
+`;
+
+const Error = styled.div`
+  color: red;
+  height: 18px;
+`;
+
+const SignInText = styled.h2``;
 
 const DivSignIn = styled.div``;
 
+const Separation = styled.div`
+  border-bottom: 1px solid whitesmoke;
+  margin: 0 5px;
+`;
+
 const FormSignIn = styled.form`
+  padding-top: 10px;
   width: 300px;
+  height: 300px;
   text-align: center;
+  background: radial-gradient(
+      ellipse farthest-corner at right bottom,
+      #fedb37 0%,
+      #fdb931 8%,
+      #9f7928 30%,
+      #8a6e2f 40%,
+      transparent 80%
+    ),
+    radial-gradient(
+      ellipse farthest-corner at left top,
+      #ffffff 0%,
+      #ffffac 8%,
+      #d1b464 25%,
+      #5d4a1f 62.5%,
+      #5d4a1f 100%
+    );
   margin-left: auto;
   margin-right: auto;
   margin-top: 200px;
-  border: 1px solid black;
+
+  box-shadow: 1px 1px 15px 5px whitesmoke;
+  border-radius: 5px;
 `;
 
 const Input = styled.input`
@@ -85,9 +137,43 @@ const Input = styled.input`
 `;
 
 const SubmitButton = styled.button`
-  margin-bottom: 10px;
+  margin-top: 5px;
+  margin-bottom: 30px;
+  font-size: 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  border: 2px solid transparent;
+  &:hover  {
+    border-color: black;
+  }
 `;
 
-const SignUpLink = styled(NavLink)``;
+const SignUpdirection = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+const SignUpText = styled.h4``;
+
+const SignUpLink = styled(NavLink)`
+  color: black;
+  margin-top: 0;
+  text-decoration: none;
+`;
+
+const ButtonSignUp = styled.button`
+  background-color: whitesmoke;
+  border: none;
+  margin: auto;
+  width: fit-content;
+  font-size: 15px;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  &:hover  {
+    border-color: black;
+  }
+`;
 
 export default SignIn;

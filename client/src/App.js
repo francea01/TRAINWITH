@@ -5,6 +5,8 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import HomeFeed from "./pages/HomeFeed";
+import Profile from "./pages/Profile";
+import ResearchResults from "./pages/ResearchResults";
 
 function App() {
   return (
@@ -21,6 +23,14 @@ function App() {
             <Route exact path="/sign-up">
               <SignUp />
             </Route>
+            <Route exact path="/profile">
+              <Profile />
+            </Route>
+            <Route
+              exact
+              path="/search/:query"
+              component={ResearchResults}
+            ></Route>
           </Switch>
         </Router>
       </Wrapper>

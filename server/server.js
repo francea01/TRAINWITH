@@ -2,8 +2,15 @@ const path = require("path");
 const express = require("express");
 require("dotenv").config();
 const { signIn, signUp } = require("./controllers/auth");
-const { createMeeting, getMeetings } = require("./controllers/meetings");
+const {
+  createMeeting,
+  getMeetings,
+  patchMeetingSigners,
+  addComment,
+  getMeetingsByCategory,
+} = require("./controllers/meetings");
 const { auth } = require("./middlewares/auth.middleware");
+const { getUsersInfo } = require("./controllers/users");
 
 const PORT = 8000;
 
@@ -14,8 +21,13 @@ express()
   .post("/public/sign-in", signIn)
   .post("/public/sign-up", signUp)
 
-  .post("/private/meeting", createMeeting)
   .get("/private/meetings", getMeetings)
+  .post("/private/meeting", createMeeting)
+  .get("/private/meetings/search/:sport", getMeetingsByCategory)
+  .patch("/private/meeting/signers", patchMeetingSigners)
+  .post("/private/meeting/comments", addComment)
+
+  .get("/private/users", getUsersInfo)
 
   // this is our catch all endpoint.
   .get("*", (req, res) => {

@@ -46,6 +46,9 @@ const SignUp = () => {
   return (
     <Wrapper>
       <SignInLink to="/sign-in">Sign-in</SignInLink>
+      <Title>TRAINWITH</Title>
+      <Separation></Separation>
+
       <Form onSubmit={addingNewUser}>
         <Input
           type="text"
@@ -95,15 +98,63 @@ const SignUp = () => {
 
 const Wrapper = styled.div``;
 
-const SignInLink = styled(NavLink)``;
+const Title = styled.h1`
+  font-family: "Julius Sans One", sans-serif;
+  margin-left: 15px;
+  font-size: 38px;
+  color: white;
+  margin-bottom: 10px;
+  margin-top: 5px;
+`;
+
+const SignInLink = styled(NavLink)`
+  display: flex;
+  justify-content: flex-end;
+  font-family: "Julius Sans One", sans-serif;
+  margin-right: 10px;
+  margin-top: 5px;
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+  &:hover {
+    text-decoration: underline;
+    color: whitesmoke;
+  }
+`;
+
+const Separation = styled.div`
+  border-bottom: 1px solid whitesmoke;
+  margin: 0 5px;
+`;
 
 const Form = styled.form`
   width: 300px;
+  padding-top: 10px;
+  height: 300px;
   text-align: center;
+  background: radial-gradient(
+      ellipse farthest-corner at right bottom,
+      #fedb37 0%,
+      #fdb931 8%,
+      #9f7928 30%,
+      #8a6e2f 40%,
+      transparent 80%
+    ),
+    radial-gradient(
+      ellipse farthest-corner at left top,
+      #ffffff 0%,
+      #ffffac 8%,
+      #d1b464 25%,
+      #5d4a1f 62.5%,
+      #5d4a1f 100%
+    );
   margin-left: auto;
   margin-right: auto;
   margin-top: 200px;
-  border: 1px solid black;
+
+  box-shadow: 1px 1px 15px 5px whitesmoke;
+  border-radius: 5px;
 `;
 
 const Input = styled.input`
@@ -112,6 +163,16 @@ const Input = styled.input`
   margin-bottom: 5px;
 `;
 
-const SubmitBtn = styled.button``;
+const SubmitBtn = styled.button`
+  margin-top: 5px;
+  margin-bottom: 30px;
+  font-size: 15px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  &:hover  {
+    border: 2px solid black;
+  }
+`;
 
 export default SignUp;
