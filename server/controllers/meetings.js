@@ -10,7 +10,7 @@ const options = {
 
 const createMeeting = async (req, res) => {
   const { MONGO_URI } = process.env;
-  const { sport, players, address, date, notes, userId } = req.body;
+  const { sport, players, address, date, time, notes, userId } = req.body;
   const errors = isBodyValid(req.body, [
     { name: "sport" },
     { name: "players" },
@@ -32,6 +32,7 @@ const createMeeting = async (req, res) => {
       maxPlayers: Number(players),
       address,
       date,
+      time,
       notes,
       userId,
       signers: [],

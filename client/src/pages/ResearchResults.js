@@ -40,13 +40,27 @@ const ResearchResults = (props) => {
     <Wrapper>
       <Header />
       <ActionsBar />
-      {results.length > 0
-        ? results.map((meeting) => <Meeting meeting={meeting} />)
-        : "No meeting founded."}
+      {results.length > 0 ? (
+        results.map((meeting) => <Meeting meeting={meeting} />)
+      ) : (
+        <NoResult>
+          There are no meeting for this activity.
+          <br />
+          Maybe you should make one?
+        </NoResult>
+      )}
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div``;
+
+const NoResult = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+  font-size: 25px;
+  color: whitesmoke;
+`;
 
 export default ResearchResults;

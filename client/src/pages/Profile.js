@@ -12,9 +12,9 @@ const Profile = () => {
     <Wrapper>
       <Header />
       <ActionsBar />
-      {/* <MainPage to="/">Home page</MainPage> */}
+
       <UserInfos>
-        {selectedImage && (
+        {/* {selectedImage && (
           <div>
             <ImgProfile
               alt="not fount"
@@ -22,17 +22,19 @@ const Profile = () => {
               src={URL.createObjectURL(selectedImage)}
             />
           </div>
-        )}
+        )} */}
         <UserName>{inMemoryJwt.getParsedToken().userName}</UserName>
-        <FirstName>{inMemoryJwt.getParsedToken().firstName}</FirstName>
-        <LastName>{inMemoryJwt.getParsedToken().lastName}</LastName>
-        <UploadPic
+        <DivFullName>
+          <FirstName>{inMemoryJwt.getParsedToken().firstName}</FirstName>
+          <LastName>{inMemoryJwt.getParsedToken().lastName}</LastName>
+        </DivFullName>
+        {/* <UploadPic
           type="file"
           onChange={(event) => {
             console.log(event.target.files[0]);
             setSelectedImage(event.target.files[0]);
           }}
-        />
+        /> */}
       </UserInfos>
       <MyMeetings>
         My meetings:
@@ -44,25 +46,26 @@ const Profile = () => {
 
 const Wrapper = styled.div``;
 
-const ImgProfile = styled.img`
-  width: 150px;
-`;
+// const ImgProfile = styled.img`
+//   width: 150px;
+// `;
 
-const UploadPic = styled.input``;
-
-const MainPage = styled(NavLink)`
-  color: white;
-`;
+// const UploadPic = styled.input``;
 
 const UserName = styled.h4`
   color: black;
-  font-size: 22px;
+  font-size: 24px;
+  margin-bottom: 0;
+`;
+
+const DivFullName = styled.div`
+  display: flex;
 `;
 
 const FirstName = styled.h4`
   color: black;
+  margin-right: 5px;
 `;
-
 const LastName = styled.h4`
   color: black;
 `;

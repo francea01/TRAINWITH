@@ -13,7 +13,13 @@ const Header = () => {
   return (
     <Wrapper>
       <DivUpper>
-        <Title>TRAINWITH</Title>
+        <Button
+          onClick={(ev) => {
+            history.push("/");
+          }}
+        >
+          <Title>TRAINWITH</Title>
+        </Button>
         <Icons>
           <LogoutButton
             onClick={(ev) => {
@@ -32,13 +38,19 @@ const Header = () => {
 };
 
 const Wrapper = styled.div`
-  margin-bottom: auto;
   position: sticky;
+`;
+
+const Button = styled.button`
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 `;
 
 const Title = styled.h1`
   font-family: "Julius Sans One", sans-serif;
   margin-left: 15px;
+  margin-bottom: 25px;
   font-size: 38px;
   color: white;
 `;

@@ -13,6 +13,8 @@ const NewMeeting = ({ onCreatedMeeting }) => {
     setAddress,
     date,
     setDate,
+    time,
+    setTime,
     notes,
     setNotes,
   } = useContext(MeetingContext);
@@ -32,6 +34,7 @@ const NewMeeting = ({ onCreatedMeeting }) => {
           players,
           address,
           date,
+          time,
           notes,
         }),
       });
@@ -41,7 +44,7 @@ const NewMeeting = ({ onCreatedMeeting }) => {
         form.current.reset();
         onCreatedMeeting(data);
       } else {
-        window.alert("Sorry, error");
+        window.alert("Sorry, something wrong happened");
       }
     } catch (err) {
       console.log(err);
@@ -87,9 +90,14 @@ const NewMeeting = ({ onCreatedMeeting }) => {
         />
         <Input
           type="date"
-          max={getMinDate()}
+          min={getMinDate()}
           onChange={(ev) => setDate(ev.target.value)}
         />
+        <Input
+          placeholder="Start at:"
+          onChange={(ev) => setTime(ev.target.value)}
+        />
+
         <InputInfos
           placeholder="Notes..."
           onChange={(ev) => setNotes(ev.target.value)}

@@ -23,7 +23,7 @@ const ActionsBar = () => {
       </ProfilIcon>
       <SearchBar onSubmit={handleSubmit}>
         <Input
-          placeholder="Meeting"
+          placeholder="Meeting category:"
           // onChange={(ev) => setSearchTerm(ev.target.value)}
           // value={searchTerm}
         />
@@ -77,12 +77,18 @@ const SearchBar = styled.form`
 `;
 
 const Input = styled.input`
-  width: 70px;
+  width: 130px;
   font-size: 15px;
   margin: 0;
   border: none;
   margin-bottom: 5px;
-  background-color: transparent;
+
+  &:hover {
+    outline: none;
+    background-color: white;
+    color: grey;
+    width: 170px;
+  }
 
   &:focus {
     outline: none;

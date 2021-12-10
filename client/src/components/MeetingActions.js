@@ -94,7 +94,7 @@ const MeetingActions = ({ meetingSigners, meetingComments, meetingId }) => {
       )}
       {hasSignerError && (
         <ErrorTooltip
-          errorMessage="Sorry, max players has been reached"
+          errorMessage="The number of players for this meeting is full. Try with an other one"
           closeMessage={closeErrorMessage}
         ></ErrorTooltip>
       )}

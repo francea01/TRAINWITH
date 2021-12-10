@@ -7,6 +7,7 @@ export const MeetingProvider = ({ children }) => {
   const [players, setPlayers] = useState("");
   const [address, setAddress] = useState("");
   const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
   const [notes, setNotes] = useState("");
 
   return (
@@ -18,6 +19,8 @@ export const MeetingProvider = ({ children }) => {
         setAddress,
         date,
         setDate,
+        time,
+        setTime,
         notes,
         setNotes,
         sport,

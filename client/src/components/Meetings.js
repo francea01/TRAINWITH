@@ -3,6 +3,7 @@ import styled from "styled-components";
 import NewMeeting from "../components/NewMeeting";
 import inMemoryJwt from "../inMemoryJwt";
 import Meeting from "./Meeting";
+import { CircularProgress } from "@mui/material";
 
 const Meetings = () => {
   const [meetings, setMeetings] = useState([]);
@@ -39,10 +40,14 @@ const Meetings = () => {
     <Wrapper>
       <NewMeeting onCreatedMeeting={addMeeting} />
       <Emptydiv></Emptydiv>
-      <HomeText>Next meetings</HomeText>
-      {meetings.length > 0
-        ? meetings.map((meeting) => <Meeting meeting={meeting} />)
-        : "No meetings at this moment."}
+      <HomeText>TRAINWITH meetings</HomeText>
+      {meetings.length > 0 ? (
+        meetings.map((meeting) => <Meeting meeting={meeting} />)
+      ) : (
+        <CircularDiv>
+          <CircularProgress color="success" />
+        </CircularDiv>
+      )}
     </Wrapper>
   );
 };
@@ -62,6 +67,11 @@ const HomeText = styled.h3`
   margin-bottom: 30px;
   color: whitesmoke;
   font-size: 30px;
+`;
+
+const CircularDiv = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 export default Meetings;

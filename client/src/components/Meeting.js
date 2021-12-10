@@ -10,7 +10,8 @@ const Meeting = ({ meeting }) => {
         <PostUser>{inMemoryJwt.getParsedToken().userName}</PostUser>
         <Sport>{meeting.sport}</Sport>
         <Date>{meeting.date}</Date>
-        <Players>{meeting.maxPlayers} players</Players>
+        <Time>{meeting.time}</Time>
+        <Players>{meeting.maxPlayers} player(s) maximum</Players>
         <Address>{meeting.address}</Address>
         <Notes>Notes: {meeting.notes}</Notes>
         <TimePost> posted: {meeting.createdAt}</TimePost>
@@ -27,7 +28,7 @@ const Meeting = ({ meeting }) => {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  border-radius: 5px;
+  border-radius: 25px;
   margin: 15px auto;
   background-color: white;
   width: 600px;
@@ -43,6 +44,11 @@ const PostUser = styled.h3`
 
   border-radius: 5px;
   margin: 10px auto;
+`;
+
+const Time = styled.h3`
+  border-radius: 5px;
+  margin: 3px;
 `;
 
 const TimePost = styled.h4`

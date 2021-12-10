@@ -64,7 +64,9 @@ const Author = styled.p`
   margin: 0;
 `;
 
-const CommentField = styled.form``;
+const CommentField = styled.form`
+  border: 1px solid whitesmoke;
+`;
 
 const Input = styled.input`
   box-sizing: border-box;
