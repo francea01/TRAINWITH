@@ -4,7 +4,6 @@ import { MeetingContext } from "../contexts/MeetingContext";
 import inMemoryJwt from "../inMemoryJwt";
 import Map from "./Map";
 import Autocomplete from "react-google-autocomplete";
-import { usePlacesWidget } from "react-google-autocomplete";
 
 const NewMeeting = ({ onCreatedMeeting }) => {
   const {
@@ -22,12 +21,6 @@ const NewMeeting = ({ onCreatedMeeting }) => {
     setNotes,
   } = useContext(MeetingContext);
   const form = useRef(null);
-
-  const { ref } = usePlacesWidget({
-    apiKey: "AIzaSyBvb6ZfIT6jWwINST6rbKK1hopWAKiFJas",
-    // onPlaceSelected: (place) => setAddress(place),
-    onPress: (data, details = null) => console.log(data),
-  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -97,7 +90,7 @@ const NewMeeting = ({ onCreatedMeeting }) => {
           onChange={(ev) => setAddress(ev.target.value)}
         /> */}
         <Autocomplete
-          apiKey={"AIzaSyBvb6ZfIT6jWwINST6rbKK1hopWAKiFJas"}
+          //process.env
           componentRestrictions={{ country: "fr" }}
           options={{
             types: ["geocode", "establishment"],
