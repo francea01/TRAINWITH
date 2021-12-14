@@ -42,12 +42,10 @@ const NewComment = ({ meetingId, setNewComment }) => {
     <Wrapper>
       <CommentField onSubmit={handleAddComment}>
         <Author>{inMemoryJwt.getParsedToken().userName}:</Author>
-        <Input ref={inputRef} required />
-        {!isLoading ? (
-          <SendButton type="submit">Send</SendButton>
-        ) : (
-          <SendButton disabled>Submitting...</SendButton>
-        )}
+        <Input placeholder="New comment" ref={inputRef} required />
+        <SendButton type="submit" disabled={isLoading}>
+          {!isLoading ? "send" : "Submitting..."}
+        </SendButton>
       </CommentField>
     </Wrapper>
   );
@@ -81,6 +79,8 @@ const SendButton = styled.button`
   display: flex;
   margin: 3px auto;
   cursor: pointer;
+  font-family: "Lato", sans-serif;
+
   border-radius: 5px;
   &:hover {
     background-color: whitesmoke;

@@ -9,6 +9,7 @@ export const MeetingProvider = ({ children }) => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [notes, setNotes] = useState("");
+  const [meetings, setMeetings] = useState(null);
 
   return (
     <MeetingContext.Provider
@@ -25,6 +26,8 @@ export const MeetingProvider = ({ children }) => {
         setNotes,
         sport,
         setSport,
+        meetings,
+        setMeetings,
       }}
     >
       {children}

@@ -4,12 +4,14 @@ import inMemoryJwt from "../inMemoryJwt";
 import Header from "../components/Header";
 import ActionsBar from "../components/ActionsBar";
 import Meeting from "../components/Meeting";
+import { CircularProgress } from "@mui/material";
 
 const ResearchResults = (props) => {
   const params = props.match.params;
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState(null);
 
   useEffect(() => {
+    setResults(null);
     const fetchResults = async () => {
       try {
         const response = await fetch(
@@ -27,7 +29,7 @@ const ResearchResults = (props) => {
         if (status === 200) {
           setResults(data);
         } else {
-          window.alert("Sorry, we didn't find you.");
+          window.alert("Oups, try again!.");
         }
       } catch (err) {
         console.log(err);
@@ -40,7 +42,11 @@ const ResearchResults = (props) => {
     <Wrapper>
       <Header />
       <ActionsBar />
-      {results.length > 0 ? (
+      {!results ? (
+        <CircularDiv>
+          <CircularProgress color="success" />
+        </CircularDiv>
+      ) : results.length > 0 ? (
         results.map((meeting) => <Meeting meeting={meeting} />)
       ) : (
         <NoResult>
@@ -61,6 +67,11 @@ const NoResult = styled.div`
   margin-top: 100px;
   font-size: 25px;
   color: whitesmoke;
+`;
+
+const CircularDiv = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 export default ResearchResults;

@@ -8,6 +8,7 @@ const {
   patchMeetingSigners,
   addComment,
   getMeetingsByCategory,
+  getProfileMeetings,
 } = require("./controllers/meetings");
 const { auth } = require("./middlewares/auth.middleware");
 const { getUsersInfo } = require("./controllers/users");
@@ -22,6 +23,7 @@ express()
   .post("/public/sign-up", signUp)
 
   .get("/private/meetings", getMeetings)
+  .get("/private/profile-meetings", getProfileMeetings)
   .post("/private/meeting", createMeeting)
   .get("/private/meetings/search/:sport", getMeetingsByCategory)
   .patch("/private/meeting/signers", patchMeetingSigners)

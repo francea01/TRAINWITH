@@ -23,7 +23,7 @@ const ActionsBar = () => {
       </ProfilIcon>
       <SearchBar onSubmit={handleSubmit}>
         <Input
-          placeholder="Meeting category:"
+          placeholder="sport:"
           // onChange={(ev) => setSearchTerm(ev.target.value)}
           // value={searchTerm}
         />
@@ -61,7 +61,7 @@ const ProfilIcon = styled(NavLink)`
   color: black;
   font-weight: bold;
   margin-right: 60px;
-  background-color: transparent;
+
   cursor: pointer;
   align-self: baseline;
   margin-bottom: 0;
@@ -73,11 +73,11 @@ const SearchBar = styled.form`
   border-radius: 5px;
   margin-left: 15px;
   margin-right: 10px;
-  background-color: transparent;
+  /* background-color: transparent; */
 `;
 
 const Input = styled.input`
-  width: 130px;
+  width: 50px;
   font-size: 15px;
   margin: 0;
   border: none;
@@ -87,14 +87,14 @@ const Input = styled.input`
     outline: none;
     background-color: white;
     color: grey;
-    width: 170px;
+    width: 90px;
   }
 
   &:focus {
     outline: none;
     background-color: white;
     color: grey;
-    width: 170px;
+    width: 90px;
   }
 `;
 

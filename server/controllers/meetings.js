@@ -10,7 +10,8 @@ const options = {
 
 const createMeeting = async (req, res) => {
   const { MONGO_URI } = process.env;
-  const { sport, players, address, date, time, notes, userId } = req.body;
+  const { sport, players, address, author, date, time, notes, userId } =
+    req.body;
   const errors = isBodyValid(req.body, [
     { name: "sport" },
     { name: "players" },
@@ -28,7 +29,8 @@ const createMeeting = async (req, res) => {
     const db = client.db("TrainWith");
     const result = await db.collection("meetings").insertOne({
       createdAt: new Date().toLocaleString(),
-      sport,
+      author,
+      sport: sport.toLowerCase(),
       maxPlayers: Number(players),
       address,
       date,
@@ -80,7 +82,7 @@ const patchMeetingSigners = async (req, res) => {
         .collection("meetings")
         .updateOne({ _id: ObjectId(meetingId) }, { $set: { signers } });
       res.status(201).json({ status: 201, added: "participation removed" });
-    } else if (meeting.signers < meeting.maxPlayers) {
+    } else if (meeting.signers.length < meeting.maxPlayers) {
       signers.push(userId);
 
       await db
@@ -122,17 +124,47 @@ const getMeetings = async (req, res) => {
   }
 };
 
-const getMeetingsByCategory = async (req, res) => {
+const getProfileMeetings = async (req, res) => {
   const { MONGO_URI } = process.env;
-  const { sport } = req.params;
-  console.log(sport);
+  const { userId } = req.body;
   const client = new MongoClient(MONGO_URI, options);
   try {
     await client.connect();
     const db = client.db("TrainWith");
     const result = await db
       .collection("meetings")
-      .find({ sport })
+      .find({
+        $or: [
+          { userId },
+          {
+            signers: {
+              $in: [userId],
+            },
+          },
+        ],
+      })
+      .sort({ createdAt: -1 })
+      .toArray();
+    res.status(200).json({ status: 200, data: result });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ status: 500, data: "get profile meetings not ok" });
+  } finally {
+    client.close();
+  }
+};
+
+const getMeetingsByCategory = async (req, res) => {
+  const { MONGO_URI } = process.env;
+  const { sport } = req.params;
+  const client = new MongoClient(MONGO_URI, options);
+
+  try {
+    await client.connect();
+    const db = client.db("TrainWith");
+    const result = await db
+      .collection("meetings")
+      .find({ sport: sport.toLowerCase() })
       .sort({ createdAt: -1 })
       .toArray();
     res.status(200).json({ status: 200, data: result });
@@ -195,4 +227,5 @@ module.exports = {
   getMeetingsByCategory,
   patchMeetingSigners,
   addComment,
+  getProfileMeetings,
 };

@@ -17,9 +17,11 @@ const MeetingActions = ({ meetingSigners, meetingComments, meetingId }) => {
       (signerId) => signerId === inMemoryJwt.getParsedToken().userId
     )
   );
+  const [isLoading, setIsLoading] = useState(false);
 
   const handlePlayer = async () => {
     try {
+      setIsLoading(true);
       const response = await fetch("/private/meeting/signers", {
         method: "PATCH",
         headers: {
@@ -31,25 +33,18 @@ const MeetingActions = ({ meetingSigners, meetingComments, meetingId }) => {
         }),
       });
       const { status, data } = await response.json();
+      setIsLoading(false);
+
       if (status === 201) {
         const userId = inMemoryJwt.getParsedToken().userId;
         setParticipate(!participate);
         setNumOfPlayers((n) => (participate ? n - 1 : n + 1));
+
         if (!participate) {
           meetingSigners.push(userId);
         } else {
           meetingSigners = meetingSigners.filter((signer) => signer !== userId);
         }
-        // get signers names
-        // fetch(`/private/users?userIds=${meetingSigners}`, {
-        //   method: "GET",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //     Authorization: `Bearer ${inMemoryJwt.getToken()}`,
-        //   },
-        // })
-        //   .then((res) => res.json())
-        //   .then((res) => console.log(res.users));
       } else if (status === 403) {
         setHasSignerError(true);
       } else {
@@ -76,7 +71,7 @@ const MeetingActions = ({ meetingSigners, meetingComments, meetingId }) => {
   return (
     <Wrapper>
       <ActionIcons>
-        <Button onClick={handlePlayer}>
+        <Button onClick={handlePlayer} disabled={isLoading}>
           <HowToRegIcon />
           {numOfPlayers}
         </Button>
@@ -104,6 +99,7 @@ const MeetingActions = ({ meetingSigners, meetingComments, meetingId }) => {
 
 const Wrapper = styled.div`
   margin-top: 10px;
+  background-color: whitesmoke;
 `;
 
 const ActionIcons = styled.div`
@@ -122,6 +118,7 @@ const Button = styled.button`
 const CommentSection = styled.div`
   display: flex;
   flex-direction: column;
+  border: 1px solid grey;
 `;
 
 export default MeetingActions;

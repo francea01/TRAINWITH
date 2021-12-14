@@ -16,7 +16,8 @@ const Comments = ({ comments }) => {
 };
 
 const Wrapper = styled.div`
-  border: 1px solid whitesmoke;
+  border: 1px solid black;
+  border-radius: 2px;
 `;
 
 const Div = styled.div`

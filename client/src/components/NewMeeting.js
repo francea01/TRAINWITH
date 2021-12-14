@@ -2,6 +2,9 @@ import React, { useContext, useRef } from "react";
 import styled from "styled-components";
 import { MeetingContext } from "../contexts/MeetingContext";
 import inMemoryJwt from "../inMemoryJwt";
+import Map from "./Map";
+import Autocomplete from "react-google-autocomplete";
+import { usePlacesWidget } from "react-google-autocomplete";
 
 const NewMeeting = ({ onCreatedMeeting }) => {
   const {
@@ -20,6 +23,12 @@ const NewMeeting = ({ onCreatedMeeting }) => {
   } = useContext(MeetingContext);
   const form = useRef(null);
 
+  const { ref } = usePlacesWidget({
+    apiKey: "AIzaSyBvb6ZfIT6jWwINST6rbKK1hopWAKiFJas",
+    // onPlaceSelected: (place) => setAddress(place),
+    onPress: (data, details = null) => console.log(data),
+  });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -31,6 +40,7 @@ const NewMeeting = ({ onCreatedMeeting }) => {
         },
         body: JSON.stringify({
           sport,
+          author: inMemoryJwt.getParsedToken().userName,
           players,
           address,
           date,
@@ -53,9 +63,6 @@ const NewMeeting = ({ onCreatedMeeting }) => {
 
   const getMinDate = () => {
     const today = new Date();
-    console.log(
-      `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
-    );
     return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
   };
   return (
@@ -63,7 +70,7 @@ const NewMeeting = ({ onCreatedMeeting }) => {
       <Form ref={form} onSubmit={handleSubmit}>
         <NewMeetingText>Post your next Meeting</NewMeetingText>
         <Select onChange={(ev) => setSport(ev.target.value)}>
-          <Option disabled selected defaultValue>
+          <Option disabled selected>
             --Please choose an Activity--
           </Option>
           <Option>Soccer</Option>
@@ -84,10 +91,20 @@ const NewMeeting = ({ onCreatedMeeting }) => {
           placeholder="Number players:"
           onChange={(ev) => setPlayers(ev.target.value)}
         />
-        <Input
-          placeholder="Meeting address:"
+        {/* <Input
+          ref={ref}
+          placeholder="Enter an address"
+          onChange={(ev) => setAddress(ev.target.value)}
+        /> */}
+        <Autocomplete
+          apiKey={"AIzaSyBvb6ZfIT6jWwINST6rbKK1hopWAKiFJas"}
+          componentRestrictions={{ country: "fr" }}
+          options={{
+            types: ["geocode", "establishment"],
+          }}
           onChange={(ev) => setAddress(ev.target.value)}
         />
+
         <Input
           type="date"
           min={getMinDate()}
@@ -97,13 +114,11 @@ const NewMeeting = ({ onCreatedMeeting }) => {
           placeholder="Start at:"
           onChange={(ev) => setTime(ev.target.value)}
         />
-
         <InputInfos
           placeholder="Notes..."
           onChange={(ev) => setNotes(ev.target.value)}
         />
-
-        <SubmitBtn type="submit">LET'S GO!</SubmitBtn>
+        <SubmitBtn type="submit">CREATE</SubmitBtn>
       </Form>
     </Wrapper>
   );
@@ -120,6 +135,7 @@ const NewMeetingText = styled.h4`
   text-align: center;
   color: white;
   margin: 0;
+  font-family: "Lato", sans-serif;
 `;
 
 const Form = styled.form`
@@ -155,6 +171,7 @@ const Form = styled.form`
 const Select = styled.select`
   margin: 3px;
   height: 35px;
+  font-family: "Lato", sans-serif;
 `;
 
 const Option = styled.option`
@@ -165,31 +182,35 @@ const Input = styled.input`
   margin: 3px;
   text-align: center;
   height: 35px;
+  font-family: "Lato", sans-serif;
 `;
 
 const InputInfos = styled.input`
   margin: 3px 3px 5px 3px;
   height: 100px;
   text-align: center;
+  font-family: "Lato", sans-serif;
 `;
 
 const SubmitBtn = styled.button`
   width: 70px;
-  margin: 3px auto;
+  margin: 9px auto;
+  padding: 3px;
   border-radius: 5px;
-  border: 2px solid transparent;
+  border: 1px solid white;
+  font-family: "Six Caps", sans-serif;
   cursor: pointer;
-  background-color: transparent;
-  color: white;
+  background-color: white;
+  color: black;
   &:hover {
-    border-radius: 40px;
-    background-color: gray;
-    box-shadow: 1px 1px 20px 2px whitesmoke;
+    border-radius: 5px;
+    font-weight: bold;
   }
 
   &:active {
-    color: transparent;
-    box-shadow: 5px 1px 15px 1px whitesmoke;
+    color: white;
+    background-color: black;
+    box-shadow: 1px 1px 20px 2px whitesmoke;
   }
 `;
 

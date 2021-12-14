@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import NewMeeting from "../components/NewMeeting";
 import inMemoryJwt from "../inMemoryJwt";
 import Meeting from "./Meeting";
 import { CircularProgress } from "@mui/material";
+import { MeetingContext } from "../contexts/MeetingContext";
 
 const Meetings = () => {
-  const [meetings, setMeetings] = useState([]);
+  //   const [meetings, setMeetings] = useState([]);
+
+  const { meetings, setMeetings } = useContext(MeetingContext);
 
   const addMeeting = (meeting) => {
+    setMeetings([]);
     setMeetings([meeting, ...meetings]);
   };
 
@@ -34,6 +38,10 @@ const Meetings = () => {
       }
     };
     fetchMeetings();
+
+    return () => {
+      setMeetings(null);
+    };
   }, []);
 
   return (
@@ -41,12 +49,14 @@ const Meetings = () => {
       <NewMeeting onCreatedMeeting={addMeeting} />
       <Emptydiv></Emptydiv>
       <HomeText>TRAINWITH meetings</HomeText>
-      {meetings.length > 0 ? (
-        meetings.map((meeting) => <Meeting meeting={meeting} />)
-      ) : (
+      {!meetings ? (
         <CircularDiv>
           <CircularProgress color="success" />
         </CircularDiv>
+      ) : meetings.length > 0 ? (
+        meetings.map((meeting, key) => <Meeting meeting={meeting} key={key} />)
+      ) : (
+        "no meeting"
       )}
     </Wrapper>
   );
@@ -58,15 +68,16 @@ const Wrapper = styled.div`
 
 const Emptydiv = styled.div`
   margin-top: 15px;
-  border-top: 2px solid whitesmoke;
+  border-top: 3px solid black;
 `;
 
 const HomeText = styled.h3`
   display: flex;
   justify-content: center;
   margin-bottom: 30px;
-  color: whitesmoke;
+  color: white;
   font-size: 30px;
+  font-family: "Lato", sans-serif;
 `;
 
 const CircularDiv = styled.div`
