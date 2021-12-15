@@ -52,7 +52,7 @@ const ResearchResults = (props) => {
         <NoResult>
           There are no meeting for this activity.
           <br />
-          Maybe you should make one?
+          Maybe you should create one?
         </NoResult>
       )}
     </Wrapper>

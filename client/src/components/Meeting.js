@@ -14,7 +14,7 @@ const Meeting = ({ meeting }) => {
         <Players>
           {meeting.maxPlayers} player{meeting.maxPlayers > 1 ? "s" : ""} maximum
         </Players>
-        <Address>{meeting.address}</Address>
+        <Address>{meeting.address.address}</Address>
         <Notes>Notes: {meeting.notes}</Notes>
         <TimePost> posted: {meeting.createdAt}</TimePost>
       </PostMeeting>
@@ -42,10 +42,9 @@ const PostMeeting = styled.div`
   flex-direction: column;
 `;
 
-const PostUser = styled.h3`
-  font-size: 26px;
-  font-family: "Lato", sans-serif;
-
+const PostUser = styled.h1`
+  font-family: "Racing Sans One", cursive;
+  color: #797d7f;
   border-radius: 5px;
   margin: 10px auto;
 `;

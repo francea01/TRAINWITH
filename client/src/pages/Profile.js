@@ -1,15 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
+
 import inMemoryJwt from "../inMemoryJwt";
 import Header from "../components/Header";
 import ActionsBar from "../components/ActionsBar";
 import Meeting from "../components/Meeting";
-import { MeetingContext } from "../contexts/MeetingContext";
 import { CircularProgress } from "@mui/material";
 
-const Profile = ({ meetingSigners, meetingId }) => {
-  const { meetings, setMeetings } = useContext(MeetingContext);
+const Profile = () => {
+  const [meetings, setMeetings] = useState(null);
 
   useEffect(() => {
     const getMeetings = async () => {
@@ -25,10 +24,6 @@ const Profile = ({ meetingSigners, meetingId }) => {
       setMeetings(data);
     };
     getMeetings();
-
-    return () => {
-      setMeetings(null);
-    };
   }, []);
 
   return (
@@ -65,17 +60,8 @@ const CircularDiv = styled.div`
 const DivUpper = styled.div`
   padding: 0px;
   display: flex;
-  margin-bottom: 0;
-  margin-top: 10px;
-  background: rgb(117, 126, 136);
-  background: linear-gradient(
-    23deg,
-    rgba(117, 126, 136, 1) 0%,
-    rgba(201, 205, 207, 1) 28%,
-    rgba(203, 203, 105, 0.5271867612293144) 44%,
-    rgba(175, 170, 34, 1) 86%
-  );
-  box-shadow: 0 4px 2px -2px #f2f3f4;
+  border-bottom: 2px solid #fcf3cf;
+  margin: 10px 10px;
 `;
 
 const MyMeetingText = styled.div`
@@ -88,18 +74,20 @@ const MyMeetingText = styled.div`
 const UserName = styled.h4`
   width: 100px;
   height: 100px;
-  border: 5px solid gold;
+  border: 5px solid #fcf3cf;
   border-radius: 50%;
   font-size: 18px;
   color: white;
   margin-left: 10px;
   line-height: 100px;
   text-align: center;
-  background-color: gray;
+  background-color: #fdb813;
+  background-image: linear-gradient(315deg, #fdb813 0%, #788cb6 74%);
+  font-family: "Racing Sans One", cursive;
 `;
 
 const MyMeetings = styled.div`
-  margin-top: 40px;
+  margin-top: 20px;
 `;
 
 export default Profile;

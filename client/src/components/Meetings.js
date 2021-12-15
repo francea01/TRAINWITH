@@ -5,11 +5,18 @@ import inMemoryJwt from "../inMemoryJwt";
 import Meeting from "./Meeting";
 import { CircularProgress } from "@mui/material";
 import { MeetingContext } from "../contexts/MeetingContext";
+import ErrorTooltip from "./ErrorTooltip";
 
 const Meetings = () => {
   //   const [meetings, setMeetings] = useState([]);
 
-  const { meetings, setMeetings } = useContext(MeetingContext);
+  const {
+    meetings,
+    setMeetings,
+    fetchMeetings,
+    errorMessage,
+    closeErrorMessage,
+  } = useContext(MeetingContext);
 
   const addMeeting = (meeting) => {
     setMeetings([]);
@@ -17,31 +24,7 @@ const Meetings = () => {
   };
 
   useEffect(() => {
-    const fetchMeetings = async () => {
-      try {
-        const response = await fetch("/private/meetings", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${inMemoryJwt.getToken()}`,
-          },
-        });
-        const { status, data } = await response.json();
-
-        if (status === 200) {
-          setMeetings(data);
-        } else {
-          window.alert("Sorry, we didn't find you.");
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
     fetchMeetings();
-
-    return () => {
-      setMeetings(null);
-    };
   }, []);
 
   return (
@@ -58,6 +41,12 @@ const Meetings = () => {
       ) : (
         "no meeting"
       )}
+      {errorMessage && (
+        <ErrorTooltip
+          errorMessage={errorMessage}
+          closeMessage={closeErrorMessage}
+        />
+      )}
     </Wrapper>
   );
 };
@@ -68,7 +57,7 @@ const Wrapper = styled.div`
 
 const Emptydiv = styled.div`
   margin-top: 15px;
-  border-top: 3px solid black;
+  border-top: 3px solid #fcf3cf;
 `;
 
 const HomeText = styled.h3`

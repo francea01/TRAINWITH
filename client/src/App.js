@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-
+import Map from "./components/Map";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import HomeFeed from "./pages/HomeFeed";
@@ -15,13 +15,16 @@ function App() {
         <Router>
           <Switch>
             <Route exact path="/">
-              <HomeFeed />
-            </Route>
-            <Route exact path="/sign-in">
               <SignIn />
             </Route>
             <Route exact path="/sign-up">
               <SignUp />
+            </Route>
+            <Route exact path="/home">
+              <HomeFeed />
+            </Route>
+            <Route exact path="/map">
+              <Map />
             </Route>
             <Route exact path="/profile">
               <Profile />

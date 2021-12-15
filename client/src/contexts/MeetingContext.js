@@ -1,4 +1,5 @@
 import React, { createContext, useState } from "react";
+import inMemoryJwt from "../inMemoryJwt";
 
 export const MeetingContext = createContext(null);
 
@@ -10,6 +11,30 @@ export const MeetingProvider = ({ children }) => {
   const [time, setTime] = useState("");
   const [notes, setNotes] = useState("");
   const [meetings, setMeetings] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const closeErrorMessage = () => setErrorMessage(null);
+  const fetchMeetings = async () => {
+    setErrorMessage(null);
+    setMeetings(null);
+    try {
+      const response = await fetch("/private/meetings", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${inMemoryJwt.getToken()}`,
+        },
+      });
+      const { status, data } = await response.json();
+
+      if (status === 200) {
+        setMeetings(data);
+      } else {
+        setErrorMessage("An error as occured during meetings fetch");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <MeetingContext.Provider
@@ -28,6 +53,9 @@ export const MeetingProvider = ({ children }) => {
         setSport,
         meetings,
         setMeetings,
+        fetchMeetings,
+        errorMessage,
+        closeErrorMessage,
       }}
     >
       {children}

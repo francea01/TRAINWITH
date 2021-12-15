@@ -3,14 +3,12 @@ import styled from "styled-components";
 import ActionsBar from "../components/ActionsBar";
 import Header from "../components/Header";
 import Meetings from "../components/Meetings";
-import Map from "../components/Map";
 
 const HomeFeed = () => {
   return (
     <Wrapper>
       <Header />
       <ActionsBar />
-      <Map />
       <Meetings />
     </Wrapper>
   );

@@ -2,8 +2,8 @@ import React, { useContext, useRef } from "react";
 import styled from "styled-components";
 import { MeetingContext } from "../contexts/MeetingContext";
 import inMemoryJwt from "../inMemoryJwt";
-import Map from "./Map";
 import Autocomplete from "react-google-autocomplete";
+import apiKeys from "../apiKeys";
 
 const NewMeeting = ({ onCreatedMeeting }) => {
   const {
@@ -62,7 +62,7 @@ const NewMeeting = ({ onCreatedMeeting }) => {
     <Wrapper>
       <Form ref={form} onSubmit={handleSubmit}>
         <NewMeetingText>Post your next Meeting</NewMeetingText>
-        <Select onChange={(ev) => setSport(ev.target.value)}>
+        <Select onChange={(ev) => setSport(ev.target.value)} required>
           <Option disabled selected>
             --Please choose an Activity--
           </Option>
@@ -83,33 +83,51 @@ const NewMeeting = ({ onCreatedMeeting }) => {
         <Input
           placeholder="Number players:"
           onChange={(ev) => setPlayers(ev.target.value)}
+          required
         />
-        {/* <Input
-          ref={ref}
-          placeholder="Enter an address"
-          onChange={(ev) => setAddress(ev.target.value)}
-        /> */}
         <Autocomplete
-          // process.env ;
+          placeholder={"Enter an address"}
+          required
+          apiKey={apiKeys.googleMaps}
           componentRestrictions={{ country: "fr" }}
           options={{
             types: ["geocode", "establishment"],
           }}
-          onChange={(ev) => setAddress(ev.target.value)}
+          onPlaceSelected={(place) => {
+            if (place.formatted_address) {
+              const address = {
+                address: place.formatted_address,
+                lat: place.geometry.location.lat(),
+                lng: place.geometry.location.lng(),
+              };
+              setAddress(address);
+            } else {
+              setAddress("");
+            }
+          }}
+          style={{
+            margin: "3px",
+            textAlign: "center",
+            height: "35px",
+            fontFamily: "Lato, sans-serif",
+          }}
         />
 
         <Input
           type="date"
           min={getMinDate()}
           onChange={(ev) => setDate(ev.target.value)}
+          required
         />
         <Input
-          placeholder="Start at:"
+          type="time"
           onChange={(ev) => setTime(ev.target.value)}
+          required
         />
         <InputInfos
           placeholder="Notes..."
           onChange={(ev) => setNotes(ev.target.value)}
+          required
         />
         <SubmitBtn type="submit">CREATE</SubmitBtn>
       </Form>
@@ -132,22 +150,8 @@ const NewMeetingText = styled.h4`
 `;
 
 const Form = styled.form`
-  background: radial-gradient(
-      ellipse farthest-corner at right bottom,
-      #fedb37 0%,
-      #fdb931 8%,
-      #9f7928 30%,
-      #8a6e2f 40%,
-      transparent 80%
-    ),
-    radial-gradient(
-      ellipse farthest-corner at left top,
-      #ffffff 0%,
-      #ffffac 8%,
-      #d1b464 25%,
-      #5d4a1f 62.5%,
-      #5d4a1f 100%
-    );
+  background-color: #fdb813;
+  background-image: linear-gradient(315deg, #fdb813 0%, #788cb6 74%);
   display: flex;
   flex-direction: column;
   justify-content: center;

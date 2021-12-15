@@ -113,6 +113,7 @@ const getMeetings = async (req, res) => {
     const db = client.db("TrainWith");
     const result = await db
       .collection("meetings")
+      // find({ createdAt: { $gte: new Date().toLocaleDateString() } })
       .find()
       .sort({ createdAt: -1 })
       .toArray();

@@ -16,7 +16,7 @@ const Header = () => {
         <Button
           onClick={(ev) => {
             ev.preventDefault();
-            history.push("/");
+            history.push("/home");
           }}
         >
           <Title>TRAINWITH</Title>
@@ -26,14 +26,13 @@ const Header = () => {
             onClick={(ev) => {
               ev.preventDefault();
               logout();
-              history.push("/sign-in");
+              history.push("/");
             }}
           >
             Logout
           </LogoutButton>
         </Icons>
       </DivUpper>
-      {/* <BackgroundPic alt={"background-pic"} src={"./img/sportbackground.png"} /> */}
     </Wrapper>
   );
 };

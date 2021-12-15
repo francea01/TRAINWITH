@@ -35,7 +35,7 @@ const SignUp = () => {
       });
       const { status } = await response.json();
       if (status === 200) {
-        history.push("/sign-in");
+        history.push("/");
       } else {
       }
     } catch (err) {

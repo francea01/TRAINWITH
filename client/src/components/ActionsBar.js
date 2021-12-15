@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
 import SearchIcon from "@mui/icons-material/Search";
+import MapIcon from "@mui/icons-material/Map";
 
 const ActionsBar = () => {
   const history = useHistory();
-  const handleSubmit = (evt) => {
-    const inputValue = evt.target.elements[0].value;
-    evt.preventDefault();
+  const handleSubmit = (ev) => {
+    const inputValue = ev.target.elements[0].value;
+    ev.preventDefault();
     history.push({
       pathname: `/search/${inputValue}`,
     });
@@ -18,15 +18,14 @@ const ActionsBar = () => {
 
   return (
     <Wrapper>
+      <MapMeetings to="/map">
+        <MapIcon color="success" style={{ color: "white", marginTop: 7 }} />
+      </MapMeetings>
       <ProfilIcon to="/profile">
         <PersonIcon color="success" style={{ color: "white", marginTop: 7 }} />
       </ProfilIcon>
       <SearchBar onSubmit={handleSubmit}>
-        <Input
-          placeholder="sport:"
-          // onChange={(ev) => setSearchTerm(ev.target.value)}
-          // value={searchTerm}
-        />
+        <Input placeholder="sport:" />
         <Button>
           <SearchIcon style={{ fontSize: 20 }} />
         </Button>
@@ -57,6 +56,17 @@ const Wrapper = styled.div`
     );
 `;
 
+const MapMeetings = styled(NavLink)`
+  color: black;
+  font-weight: bold;
+  margin-right: 60px;
+
+  cursor: pointer;
+  align-self: baseline;
+  margin-bottom: 0;
+  width: 5px;
+`;
+
 const ProfilIcon = styled(NavLink)`
   color: black;
   font-weight: bold;
@@ -73,7 +83,6 @@ const SearchBar = styled.form`
   border-radius: 5px;
   margin-left: 15px;
   margin-right: 10px;
-  /* background-color: transparent; */
 `;
 
 const Input = styled.input`

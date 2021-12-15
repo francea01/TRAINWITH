@@ -99,7 +99,7 @@ const MeetingActions = ({ meetingSigners, meetingComments, meetingId }) => {
 
 const Wrapper = styled.div`
   margin-top: 10px;
-  background-color: whitesmoke;
+  background-color: #fcf3cf;
 `;
 
 const ActionIcons = styled.div`

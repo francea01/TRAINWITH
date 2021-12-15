@@ -16,8 +16,10 @@ const Comments = ({ comments }) => {
 };
 
 const Wrapper = styled.div`
-  border: 1px solid black;
+  border: 1px solid #f7f9f9;
   border-radius: 2px;
+  background-color: white;
+  margin: 4px 0;
 `;
 
 const Div = styled.div`

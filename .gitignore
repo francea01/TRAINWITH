@@ -12,6 +12,9 @@ server/node_modules
 # production
 /build
 
+# api keys
+/client/src/apiKeys.js
+
 # misc
 **/.env
 .DS_Store

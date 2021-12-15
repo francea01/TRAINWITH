@@ -44,7 +44,7 @@ const NewComment = ({ meetingId, setNewComment }) => {
         <Author>{inMemoryJwt.getParsedToken().userName}:</Author>
         <Input placeholder="New comment" ref={inputRef} required />
         <SendButton type="submit" disabled={isLoading}>
-          {!isLoading ? "send" : "Submitting..."}
+          {!isLoading ? "Send" : "Submitting..."}
         </SendButton>
       </CommentField>
     </Wrapper>
@@ -60,6 +60,8 @@ const Wrapper = styled.div`
 
 const Author = styled.p`
   margin: 0;
+  background-color: whitesmoke;
+  color: #85929e;
 `;
 
 const CommentField = styled.form`
@@ -71,19 +73,27 @@ const Input = styled.input`
   width: 100%;
   height: 55px;
   margin-bottom: 4px;
-  border: 1px solid whitesmoke;
+  border: 1px solid #f7f9f9;
   border-radius: 5px;
 `;
 
 const SendButton = styled.button`
   display: flex;
-  margin: 3px auto;
+  margin: 5px auto;
+  padding: 3px;
   cursor: pointer;
   font-family: "Lato", sans-serif;
+  border: none;
+  background-color: #85929e;
+  font-size: 20px;
+  padding: auto;
+  text-align: center;
+  color: white;
+  box-shadow: 0px 0px 19px 3px white;
 
   border-radius: 5px;
   &:hover {
-    background-color: whitesmoke;
+    background-color: orange;
   }
 `;
 

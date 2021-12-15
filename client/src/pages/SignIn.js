@@ -27,7 +27,7 @@ const SignIn = () => {
       const { status, token } = await response.json();
       if (status === 200) {
         inMemoryJWTManager.setToken(token);
-        history.push("/");
+        history.push("/home");
       } else if (status === 404) {
         setHasFormError(true);
       } else {

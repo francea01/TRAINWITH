@@ -1,35 +1,87 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { MapContainer, TileLayer, Marker, Tooltip, Popup } from "react-leaflet";
 import styled from "styled-components";
 import Geocode from "react-geocode";
 import SearchField from "./SearchField";
+import Header from "./Header";
+import ActionsBar from "./ActionsBar";
+import apiKeys from "../apiKeys";
+import { MeetingContext } from "../contexts/MeetingContext";
+import ErrorTooltip from "./ErrorTooltip";
 
 const Map = () => {
-  const [height, setHeight] = useState("500px");
-  const coord = [48.505, -54.021];
+  const [height, setHeight] = useState("600px");
+  const [coord, setCoord] = useState();
+  const { meetings, fetchMeetings, errorMessage, closeErrorMessage } =
+    useContext(MeetingContext);
+  const defaultCoor = [45.5016889, -73.567256];
+
+  useEffect(() => {
+    fetchMeetings();
+    const getLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          showPosition,
+          setDefaultPosition
+        );
+      } else {
+        showPosition();
+      }
+    };
+
+    const showPosition = (position) => {
+      setCoord([position.coords.latitude, position.coords.longitude]);
+    };
+
+    const setDefaultPosition = () => {
+      setCoord(defaultCoor);
+    };
+
+    getLocation();
+  }, []);
 
   return (
-    <Container>
-      <MyMap height={height} center={coord} zoom={13}>
-        <SearchField
-          apiKey={
-            "pk.eyJ1IjoiYWRyaWYiLCJhIjoiY2t4M2gwOXRsMjEzajJ0bGF1Ym9ob2RuMyJ9.csWIVLTlB2CKEnZCwm9jmw"
-          }
-        />
+    <Wrapper>
+      <Header />
+      <ActionsBar />
+      <Container>
+        {coord ? (
+          <MyMap height={height} center={coord} zoom={13}>
+            <SearchField apiKey={apiKeys.leaflet} />
 
-        <TileLayer
-          attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"
-        />
-        <Marker position={coord}>
-          <Tooltip permanent>Here you are</Tooltip>
-        </Marker>
-      </MyMap>
-    </Container>
+            <TileLayer
+              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"
+            />
+            {meetings &&
+              meetings.map((meeting) => {
+                return (
+                  <Marker position={[meeting.address.lat, meeting.address.lng]}>
+                    <Tooltip permanent>
+                      {meeting.author} / {meeting.date} / {meeting.sport}
+                    </Tooltip>
+                  </Marker>
+                );
+              })}
+          </MyMap>
+        ) : (
+          ""
+        )}
+        {errorMessage && (
+          <ErrorTooltip
+            errorMessage={errorMessage}
+            closeMessage={closeErrorMessage}
+          />
+        )}
+      </Container>
+    </Wrapper>
   );
 };
 
+const Wrapper = styled.div``;
+
 const Container = styled.div`
+  margin: 20px 5px;
   font-size: 24px;
   font-weight: bold;
 `;
