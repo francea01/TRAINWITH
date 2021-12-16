@@ -5,6 +5,8 @@ import Header from "../components/Header";
 import ActionsBar from "../components/ActionsBar";
 import Meeting from "../components/Meeting";
 import { CircularProgress } from "@mui/material";
+import inMemoryJWTManager from "../inMemoryJwt";
+import { Redirect } from "react-router-dom";
 
 const ResearchResults = (props) => {
   const params = props.match.params;
@@ -40,20 +42,26 @@ const ResearchResults = (props) => {
 
   return (
     <Wrapper>
-      <Header />
-      <ActionsBar />
-      {!results ? (
-        <CircularDiv>
-          <CircularProgress color="success" />
-        </CircularDiv>
-      ) : results.length > 0 ? (
-        results.map((meeting) => <Meeting meeting={meeting} />)
+      {!!!inMemoryJWTManager.getParsedToken() ? (
+        <Redirect to="/" />
       ) : (
-        <NoResult>
-          There are no meeting for this activity.
-          <br />
-          Maybe you should create one?
-        </NoResult>
+        <div>
+          <Header />
+          <ActionsBar />
+          {!results ? (
+            <CircularDiv>
+              <CircularProgress color="success" />
+            </CircularDiv>
+          ) : results.length > 0 ? (
+            results.map((meeting) => <Meeting meeting={meeting} />)
+          ) : (
+            <NoResult>
+              There are no meeting for this activity.
+              <br />
+              Maybe you should create one?
+            </NoResult>
+          )}
+        </div>
       )}
     </Wrapper>
   );

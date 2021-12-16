@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import inMemoryJwt from "../inMemoryJwt";
 import MeetingActions from "./MeetingActions";
 
 const Meeting = ({ meeting }) => {

@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { useHistory } from "react-router";
-import { NavLink } from "react-router-dom";
+import { NavLink, Redirect } from "react-router-dom";
 import styled from "styled-components";
+import inMemoryJWTManager from "../inMemoryJwt";
 import { UserContext } from "../contexts/UserContext";
 
 const SignUp = () => {
@@ -45,53 +46,59 @@ const SignUp = () => {
 
   return (
     <Wrapper>
-      <SignInLink to="/sign-in">Sign-in</SignInLink>
-      <Title>TRAINWITH</Title>
-      <Separation></Separation>
+      {!!inMemoryJWTManager.getParsedToken() ? (
+        <Redirect to="/home" />
+      ) : (
+        <div>
+          <SignInLink to="/sign-in">Sign-in</SignInLink>
+          <Title>TRAINWITH</Title>
+          <Separation></Separation>
 
-      <Form onSubmit={addingNewUser}>
-        <Input
-          type="text"
-          placeholder="First name"
-          autoFocus
-          onChange={(ev) => {
-            setFirstName(ev.target.value);
-          }}
-        />
+          <Form onSubmit={addingNewUser}>
+            <Input
+              type="text"
+              placeholder="First name"
+              autoFocus
+              onChange={(ev) => {
+                setFirstName(ev.target.value);
+              }}
+            />
 
-        <Input
-          type="text"
-          placeholder="Last name"
-          onChange={(ev) => {
-            setLastName(ev.target.value);
-          }}
-        />
+            <Input
+              type="text"
+              placeholder="Last name"
+              onChange={(ev) => {
+                setLastName(ev.target.value);
+              }}
+            />
 
-        <Input
-          type="text"
-          placeholder="User name"
-          onChange={(ev) => {
-            setUserName(ev.target.value);
-          }}
-        />
-        <Input
-          type="email"
-          placeholder="Your address email"
-          onChange={(ev) => {
-            setEmail(ev.target.value);
-          }}
-        />
+            <Input
+              type="text"
+              placeholder="User name"
+              onChange={(ev) => {
+                setUserName(ev.target.value);
+              }}
+            />
+            <Input
+              type="email"
+              placeholder="Your address email"
+              onChange={(ev) => {
+                setEmail(ev.target.value);
+              }}
+            />
 
-        <Input
-          type="Password"
-          placeholder="Your password"
-          onChange={(ev) => {
-            setPassword(ev.target.value);
-          }}
-        />
+            <Input
+              type="Password"
+              placeholder="Your password"
+              onChange={(ev) => {
+                setPassword(ev.target.value);
+              }}
+            />
 
-        <SubmitBtn type="submit">Sign-up</SubmitBtn>
-      </Form>
+            <SubmitBtn type="submit">Sign-up</SubmitBtn>
+          </Form>
+        </div>
+      )}
     </Wrapper>
   );
 };

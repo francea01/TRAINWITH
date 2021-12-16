@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router";
-import { NavLink } from "react-router-dom";
+import { NavLink, Redirect } from "react-router-dom";
 import styled from "styled-components";
 import { UserContext } from "../contexts/UserContext";
 import inMemoryJWTManager from "../inMemoryJwt";
@@ -40,41 +40,49 @@ const SignIn = () => {
 
   return (
     <Wrapper>
-      <Title>TRAINWITH</Title>
-      <Separation></Separation>
-
-      <DivSignIn>
-        <FormSignIn onSubmit={handleSubmit}>
-          <SignInText> Sign In</SignInText>
-
-          <Input
-            placeholder="email address"
-            autoFocus
-            type="email"
-            onChange={(ev) => {
-              setEmail(ev.target.value);
-            }}
-          />
-
-          <Input
-            placeholder="Password"
-            type="password"
-            required
-            onChange={(ev) => {
-              setPassword(ev.target.value);
-            }}
-          />
-          <Error>{hasFormError ? "email or password incorrect." : ""}</Error>
-          <SubmitButton type="submit">Submit</SubmitButton>
+      {!!inMemoryJWTManager.getParsedToken() ? (
+        <Redirect to="/home" />
+      ) : (
+        <div>
+          <Title>TRAINWITH</Title>
           <Separation></Separation>
-          <SignUpdirection>
-            <SignUpText>Start now with TRAINWITH </SignUpText>
-            <ButtonSignUp>
-              <SignUpLink to="/sign-up">Sign-up</SignUpLink>
-            </ButtonSignUp>
-          </SignUpdirection>
-        </FormSignIn>
-      </DivSignIn>
+
+          <DivSignIn>
+            <FormSignIn onSubmit={handleSubmit}>
+              <SignInText> Sign In</SignInText>
+
+              <Input
+                placeholder="email address"
+                autoFocus
+                type="email"
+                onChange={(ev) => {
+                  setEmail(ev.target.value);
+                }}
+              />
+
+              <Input
+                placeholder="Password"
+                type="password"
+                required
+                onChange={(ev) => {
+                  setPassword(ev.target.value);
+                }}
+              />
+              <Error>
+                {hasFormError ? "email or password incorrect." : ""}
+              </Error>
+              <SubmitButton type="submit">Submit</SubmitButton>
+              <Separation></Separation>
+              <SignUpdirection>
+                <SignUpText>Start now with TRAINWITH </SignUpText>
+                <ButtonSignUp>
+                  <SignUpLink to="/sign-up">Sign-up</SignUpLink>
+                </ButtonSignUp>
+              </SignUpdirection>
+            </FormSignIn>
+          </DivSignIn>
+        </div>
+      )}
     </Wrapper>
   );
 };

@@ -79,6 +79,8 @@ const ProfilIcon = styled(NavLink)`
 `;
 
 const SearchBar = styled.form`
+  display: flex;
+  align-items: center;
   background-color: white;
   border-radius: 5px;
   margin-left: 15px;
@@ -90,7 +92,6 @@ const Input = styled.input`
   font-size: 15px;
   margin: 0;
   border: none;
-  margin-bottom: 5px;
 
   &:hover {
     outline: none;
@@ -108,7 +109,6 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  margin-top: 5px;
   border: none;
   background-color: white;
   cursor: pointer;

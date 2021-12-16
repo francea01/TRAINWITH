@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-
+import inMemoryJWTManager from "../inMemoryJwt";
 import inMemoryJwt from "../inMemoryJwt";
 import Header from "../components/Header";
 import ActionsBar from "../components/ActionsBar";
 import Meeting from "../components/Meeting";
 import { CircularProgress } from "@mui/material";
+import { Redirect } from "react-router-dom";
 
 const Profile = () => {
   const [meetings, setMeetings] = useState(null);
@@ -28,24 +29,30 @@ const Profile = () => {
 
   return (
     <Wrapper>
-      <Header />
-      <ActionsBar />
-      <DivUpper>
-        <UserName>{inMemoryJwt.getParsedToken().userName} </UserName>
-        <MyMeetingText>My meetings</MyMeetingText>
-      </DivUpper>
+      {!!!inMemoryJWTManager.getParsedToken() ? (
+        <Redirect to="/" />
+      ) : (
+        <div>
+          <Header />
+          <ActionsBar />
+          <DivUpper>
+            <UserName>{inMemoryJwt.getParsedToken().userName} </UserName>
+            <MyMeetingText>My meetings</MyMeetingText>
+          </DivUpper>
 
-      <MyMeetings>
-        {!meetings ? (
-          <CircularDiv>
-            <CircularProgress color="success" />
-          </CircularDiv>
-        ) : meetings.length > 0 ? (
-          meetings.map((meeting) => <Meeting meeting={meeting} />)
-        ) : (
-          "no meeting"
-        )}
-      </MyMeetings>
+          <MyMeetings>
+            {!meetings ? (
+              <CircularDiv>
+                <CircularProgress color="success" />
+              </CircularDiv>
+            ) : meetings.length > 0 ? (
+              meetings.map((meeting) => <Meeting meeting={meeting} />)
+            ) : (
+              "no meeting"
+            )}
+          </MyMeetings>
+        </div>
+      )}
     </Wrapper>
   );
 };

@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Map from "./components/Map";
+import NotFound from "./components/NotFound";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import HomeFeed from "./pages/HomeFeed";
@@ -29,11 +30,10 @@ function App() {
             <Route exact path="/profile">
               <Profile />
             </Route>
-            <Route
-              exact
-              path="/search/:query"
-              component={ResearchResults}
-            ></Route>
+            <Route path="/search/:query" component={ResearchResults}></Route>
+            <Route>
+              <NotFound />
+            </Route>
           </Switch>
         </Router>
       </Wrapper>

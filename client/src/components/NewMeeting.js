@@ -182,7 +182,7 @@ const Input = styled.input`
   font-family: "Lato", sans-serif;
 `;
 
-const InputInfos = styled.input`
+const InputInfos = styled.textarea`
   margin: 3px 3px 5px 3px;
   height: 100px;
   text-align: center;
