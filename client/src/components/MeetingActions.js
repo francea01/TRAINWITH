@@ -32,7 +32,7 @@ const MeetingActions = ({ meetingSigners, meetingComments, meetingId }) => {
           meetingId,
         }),
       });
-      const { status, data } = await response.json();
+      const { status } = await response.json();
       setIsLoading(false);
 
       if (status === 201) {

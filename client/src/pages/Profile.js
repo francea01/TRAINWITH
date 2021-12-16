@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import inMemoryJWTManager from "../inMemoryJwt";
 import inMemoryJwt from "../inMemoryJwt";
@@ -20,7 +20,7 @@ const Profile = () => {
           Authorization: `Bearer ${inMemoryJwt.getToken()}`,
         },
       });
-      const { status, data } = await response.json();
+      const { data } = await response.json();
 
       setMeetings(data);
     };

@@ -115,4 +115,5 @@ const MyMap = styled(MapContainer)`
   height: ${(props) => props.height};
   width: 100%;
 `;
+
 export default Map;

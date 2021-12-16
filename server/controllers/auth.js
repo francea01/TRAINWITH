@@ -12,14 +12,11 @@ const options = {
 const signIn = async (req, res) => {
   const { MONGO_URI, JWT_KEY } = process.env;
   const { email, password } = req.body;
-  console.log(MONGO_URI);
-  console.log({ email, password });
   const client = new MongoClient(MONGO_URI, options);
   try {
     await client.connect();
     const db = client.db("TrainWith");
     const user = await db.collection("users").findOne({ email, password });
-    console.log(user);
 
     if (user) {
       const token = jwt.sign(
