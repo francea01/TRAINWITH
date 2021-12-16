@@ -1,15 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
 import NewMeeting from "../components/NewMeeting";
-import inMemoryJwt from "../inMemoryJwt";
 import Meeting from "./Meeting";
 import { CircularProgress } from "@mui/material";
 import { MeetingContext } from "../contexts/MeetingContext";
 import ErrorTooltip from "./ErrorTooltip";
 
 const Meetings = () => {
-  //   const [meetings, setMeetings] = useState([]);
-
   const {
     meetings,
     setMeetings,
