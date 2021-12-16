@@ -101,7 +101,10 @@ const Error = styled.div`
   height: 18px;
 `;
 
-const SignInText = styled.h2``;
+const SignInText = styled.h2`
+  font-family: "Julius Sans One", sans-serif;
+  color: whitesmoke;
+`;
 
 const DivSignIn = styled.div``;
 
@@ -163,7 +166,10 @@ const SignUpdirection = styled.div`
   flex-direction: column;
 `;
 
-const SignUpText = styled.h4``;
+const SignUpText = styled.h4`
+  font-family: "Julius Sans One", sans-serif;
+  color: whitesmoke;
+`;
 
 const SignUpLink = styled(NavLink)`
   color: black;

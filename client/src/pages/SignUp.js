@@ -50,7 +50,7 @@ const SignUp = () => {
         <Redirect to="/home" />
       ) : (
         <div>
-          <SignInLink to="/sign-in">Sign-in</SignInLink>
+          <SignInLink to="/">Sign-in</SignInLink>
           <Title>TRAINWITH</Title>
           <Separation></Separation>
 
